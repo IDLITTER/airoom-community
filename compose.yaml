@@ -1,0 +1,19 @@
+services:
+  airoom:
+    build: .
+    ports:
+      - "127.0.0.1:18888:18888"
+    env_file: .env
+    environment:
+      AIROOM_HOST: 0.0.0.0
+      AIROOM_PORT: 18888
+      AIROOM_DATA: /data
+    volumes:
+      - studio-data:/data
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  studio-data:

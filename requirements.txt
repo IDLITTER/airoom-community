@@ -1,0 +1,4 @@
+aiohttp>=3.11,<4
+python-dotenv>=1.0,<2
+Pillow>=11,<13
+tzdata>=2024.1
