@@ -21,4 +21,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Scope: This license covers project source code and original project documentation.
-Images under static/assets/ are excluded. See ASSETS.md.
+Images under static/assets/ and docs/screenshots/ are excluded. See ASSETS.md.
