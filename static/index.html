@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f0e7"><title>AIROOM · 我的 AI 工作室</title><link rel="stylesheet" href="/static/styles.css?v=community-0.1.0"><script defer src="/static/app.js?v=community-0.1.0"></script></head>
+<body>
+  <section id="login-screen" class="login-screen" hidden>
+    <div class="login-art"><img src="/static/assets/office.png" alt="温暖的虚拟办公室"></div>
+    <form id="login-form" class="login-card"><div class="brand"><span class="brand-mark">✦</span><span><b>AIROOM</b><small>我的 AI 工作室</small></span></div><h1>欢迎回家</h1><p>你的伙伴、项目和对话，都在这里。</p><label for="login-code">工作室登录码</label><input id="login-code" type="password" autocomplete="current-password" required placeholder="输入你的私有登录码"><button class="primary" type="submit">进入工作室 →</button><p id="login-error" role="alert"></p><small>登录码见交付的私有登录信息文件。</small></form>
+  </section>
+  <div id="app" class="app" hidden>
+    <aside class="sidebar" id="sidebar">
+      <button class="brand plain" id="brand-home"><span class="brand-mark">✦</span><span><b>AIROOM</b><small>我的 AI 工作室</small></span></button>
+      <div class="sidebar-content" id="sidebar-content">
+      <div class="side-label">团队 <span class="team-header-tools"><span id="team-count">5 位伙伴</span></span></div><div id="team-list"></div>
+      <button id="team-room" class="team-room"><span>♧</span><span>团队聊天室<small>随时开聊 · 闲聊 / 开会</small></span><span>↗</span></button>
+      <div class="side-label">项目<button id="add-project" class="plain icon-button" aria-label="新建项目">＋</button></div><div id="project-list"></div>
+      <div class="side-label">会话<button id="new-room" class="plain icon-button" aria-label="新建讨论">＋</button></div><div id="room-list" class="room-list"></div>
+      </div>
+      <div class="sidebar-footer"><nav class="main-nav" aria-label="工作室导航"><button data-view="home" class="nav-item selected" aria-label="工作室首页" title="工作室首页"><span>⌂</span>首页</button><button data-view="office" class="nav-item" aria-label="虚拟办公室" title="虚拟办公室"><span>▤</span>办公室</button><button data-view="house" class="nav-item" aria-label="虚拟小家" title="虚拟小家"><span>♧</span>小家</button></nav><div class="connection"><span id="connection-dot" class="dot"></span><span id="connection-text">正在连接工作室</span></div><button id="settings-open" class="plain footer-button">⚙ 设置与连接</button></div>
+    </aside>
+    <main class="main">
+      <button id="mobile-menu" class="mobile-menu-toggle icon-button" aria-label="展开导航">☰</button>
+      <section id="home-view" class="view home-view">
+        <div class="welcome"><div id="greeting" class="greeting">欢迎来到工作室</div><h1>今天想请谁来帮忙？</h1><p>你的伙伴都在这里。点一位单独聊，或邀请大家一起讨论。</p><button id="invite-all" class="soft-button">♧ 请大家一起来</button></div>
+        <div id="character-cards" class="character-cards"></div>
+        <div class="home-bottom"><div class="scene-link office-link"><div><small>专注与协作</small><h2>去办公室，开始今天的工作</h2><button class="plain" data-go="office">进入虚拟办公室 →</button></div></div><div class="scene-link house-link"><div><small>休息与陪伴</small><h2>回到小家，继续聊一会儿</h2><button class="plain" data-go="house">进入虚拟小家 →</button></div></div></div>
+        <p class="home-note">会话保存在 NAS · 每次发言标明实际模型和时间</p>
+      </section>
+      <section id="scene-view" class="view scene-view" hidden>
+        <div class="page-heading"><div><span id="scene-kicker" class="eyebrow">专注与协作</span><h1 id="scene-title">我们的办公室</h1><p id="scene-subtitle">点击伙伴单独聊天，点击圆桌一起讨论。</p></div><div class="segment"><button id="scene-office" class="selected">办公室</button><button id="scene-home">小家</button></div></div>
+        <div class="virtual-room" id="virtual-room"><img id="scene-background" src="/static/assets/office.png" alt="虚拟办公室全景"><div id="scene-actors"></div><button id="meeting-hotspot" class="meeting-hotspot">♧ 团队讨论<span>请大家一起来</span></button></div>
+        <div class="scene-caption"><span>角色位置随工作状态变化</span><span id="scene-state">大家暂时都在休息</span></div><div id="scene-member-strip" class="scene-member-strip"></div>
+      </section>
+      <section id="project-view" class="view project-view" hidden>
+        <div class="page-heading"><div><span class="eyebrow">项目空间</span><h1 id="project-title">日常工作</h1><p id="project-description"></p></div><button id="project-new-room" class="soft-button">＋ 新建项目讨论</button></div>
+        <div id="project-room-grid" class="project-room-grid"></div>
+        <div class="project-partner-section"><h2>找一位伙伴开始</h2><div id="project-partners" class="project-partners"></div></div>
+      </section>
+      <section id="chat-view" class="view chat-view" hidden>
+        <div class="chat-heading"><div class="chat-heading-main"><span class="chat-heading-icon" aria-hidden="true">▣</span><div><button id="rename-room" class="plain title-button"><h1 id="chat-title">团队讨论</h1><span>✎</span></button><p id="chat-description" class="chat-description">闲聊时大家自由接话、追问，聊到自然告一段落；开会围绕议题轮流发言，处理完后全员确认收尾。随时可以插话。</p><span id="chat-project" class="sr-only">日常工作</span></div></div><div class="chat-actions"><button id="topic-manage" class="soft-button">▱ 话题管理</button><button id="export-room" class="plain icon-button" aria-label="导出话题" title="导出当前话题">↓</button><button id="topic-new" class="soft-button">＋ 开新话题</button><button id="summary-toggle" class="plain" title="查看最后一次汇总">查看汇总</button></div></div>
+        <div class="chat-status-area">
+        <div class="topic-toolbar"><label id="topic-selector-label" for="topic-select">话题</label><select id="topic-select" aria-label="话题记录"></select><button id="compact-context" class="plain compact-context">✧ 压缩上下文</button></div>
+        <div id="discussion-panel" class="discussion-panel"><div class="discussion-panel-heading"><div><strong id="discussion-label">自由讨论</strong><small id="discussion-calls">已调用 0 次</small></div><div class="chat-control-buttons"><button id="pause-chat" class="soft-button" hidden>暂停接话</button><button id="finish-chat" class="soft-button" hidden>结束讨论</button></div></div><div id="chat-speakers" class="chat-speakers" hidden></div></div>
+        <div id="chat-member-list" class="chat-member-list"></div>
+        <div id="job-progress" class="job-progress" hidden><div class="job-status"><span class="pulse-dot"></span><strong id="job-phase">独立分析</strong><span id="job-elapsed"></span></div><div class="phase-track"><span>独立分析</span><i>→</i><span>相互复核</span><i>→</i><span>总结助理 AI 汇总</span></div><button id="stop-job" class="danger-quiet">停止本次任务</button></div>
+        </div>
+        <div id="messages" class="messages" aria-live="polite"></div><div id="attachment-list" class="attachment-list"></div>
+        <div id="chat-mode-bar" class="chat-mode-bar"><div class="segment"><button id="mode-chat">闲聊</button><button id="mode-meeting" class="selected">开会</button></div><span>闲聊自然接话 · 开会分析复核</span></div>
+        <form id="message-form" class="composer"><label class="sr-only" for="message-input">输入消息或任务</label><textarea id="message-input" rows="3" placeholder="说说你的问题，或给大家一个明确的任务…"></textarea><div class="composer-bottom"><div class="composer-tools"><button type="button" id="upload-open" class="plain" aria-label="添加图片或资料">＋ 添加资料</button><input type="file" id="upload-file" accept=".png,.jpg,.jpeg,.webp,.txt,.md,.csv,.json,.docx" hidden><span id="compose-hint">独立分析 → 一轮复核 → 汇总</span></div><div><button type="submit" id="send-message" class="primary">开始讨论 ↑</button></div></div></form>
+      </section>
+      <section id="settings-view" class="view settings-view" hidden><div class="page-heading"><div><span class="eyebrow">我的工作室</span><h1>设置与连接</h1><p>调整伙伴的名字与表达方式，查看实际模型通道。</p></div></div><div id="actor-settings" class="actor-settings"></div><div class="settings-note"><h3>讨论方式</h3><p>闲聊会逐位自然接话，你可随时插话、暂停或结束收尾。每段最多12次成员发言，达到上限后收尾；可以接着开启下一段。</p><p>团队任务进行一轮独立分析、一轮相互复核，再由 总结助理 AI 汇总。最多同时处理两个角色调用，每次角色调用最长 150 秒。关闭浏览器后，NAS 会继续处理。</p><p>角色只参与讨论和总结，不具备系统命令执行能力。</p></div><p class="muted">人物使用社区形象，可在部署目录替换。素材与代码许可分别说明。</p><button id="logout" class="soft-button">退出工作室</button></section>
+      
+    </main>
+  </div>
+  <dialog id="project-dialog"><form id="project-form"><div class="dialog-heading"><h2>新建项目</h2><button type="button" class="plain" data-close="project-dialog" aria-label="关闭">×</button></div><label for="project-name">项目名称</label><input id="project-name" required maxlength="80" placeholder="例如：视频方案、NAS 维护"><button class="primary" type="submit">创建项目</button></form></dialog>
+  <dialog id="room-dialog"><form id="room-form"><div class="dialog-heading"><h2>开始一场新讨论</h2><button type="button" class="plain" data-close="room-dialog" aria-label="关闭">×</button></div><label for="room-title">话题</label><input id="room-title" maxlength="100" placeholder="例如：检查本周视频方案"><label for="room-project">所属项目</label><select id="room-project"></select><fieldset><legend>邀请哪些伙伴？</legend><label><input type="checkbox" name="member" value="gpt" checked>Gptia · 方案与审查</label><label><input type="checkbox" name="member" value="gemini" checked>Gemini · 图片与素材</label><label><input type="checkbox" name="member" value="deepseek" checked>DeepSeek · 数字与逻辑</label><label><input type="checkbox" name="member" value="claude" checked>Claude · 写作与深度推敲</label></fieldset><p class="muted">总结助理 AI 会在复核结束后汇总结果。</p><button type="submit" class="primary">进入讨论室 →</button></form></dialog>
+  <dialog id="rename-dialog"><form id="rename-form"><div class="dialog-heading"><h2>修改会话名称</h2><button type="button" class="plain" data-close="rename-dialog" aria-label="关闭">×</button></div><label for="rename-title">名称</label><input id="rename-title" required maxlength="100"><button type="submit" class="primary">保存</button></form></dialog>
+  <dialog id="topic-dialog"><form id="topic-form"><div class="dialog-heading"><h2>开启新话题</h2><button type="button" class="plain" data-close="topic-dialog" aria-label="关闭">×</button></div><label for="topic-title">话题名称</label><input id="topic-title" required maxlength="100" placeholder="想和大家聊什么？"><p class="muted">新话题单独保存，旧话题和聊天记录可以随时切换回来。</p><button type="submit" class="primary">进入新话题</button></form></dialog>
+  <dialog id="topic-manage-dialog"><div class="dialog-heading"><h2>话题管理</h2><button type="button" class="plain" data-close="topic-manage-dialog" aria-label="关闭">×</button></div><div id="topic-manage-list"></div></dialog>
+  <dialog id="compact-dialog"><div class="dialog-heading"><h2>压缩上下文</h2><button type="button" class="plain" data-close="compact-dialog" aria-label="关闭">×</button></div><p>调用 总结助理 AI 为当前话题生成摘要，保留目标、约束、共识、分歧和待办。后续对话将参考摘要与新消息。</p><p class="muted">原始聊天不会删除。这会消耗 总结助理 AI 当前模型的调用额度；失败时保留原上下文。每批最多处理 80 条消息和约 26,000 字，剩余消息继续保留。</p><button id="compact-confirm" class="primary">生成摘要并压缩</button></dialog>
+  
+  <div id="toast" class="toast" role="status" hidden></div>
+</body></html>
+
